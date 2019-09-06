@@ -238,7 +238,28 @@ if(document.getElementById('form-teacher')!==null){
     form_component.addEventListener('submit', function(e){
         e.preventDefault()
         if(editComponente){ //Editando
-
+            $.ajax({
+                type: 'put',
+                dataType: 'json',
+                url: 'http://localhost/getlesson_api/componente/'+document.getElementById('componentes').value,
+                data: {
+                    nomeComponente: document.getElementById('nomeComponente').value,
+                    siglaComponente: document.getElementById('siglaComponente').value,
+                    jwt: localStorage.getItem('jwt')
+                },
+                success(data){
+                    cancelarComponente()
+                    editComponente = false
+                    alert('Requisicao realizada')
+                    console.log(data)
+                },
+                error(e){
+                    cancelarComponente()
+                    editComponente = false
+                    alert('Erro de requisicao')
+                    console.log(e)
+                }
+            })
         }else{ //Cadastrando
             $.ajax({
                 type: 'post',
@@ -250,16 +271,27 @@ if(document.getElementById('form-teacher')!==null){
                     jwt: localStorage.getItem('jwt')
                 },
                 success(data){
+                    cancelarComponente()
                     alert('Requisicao realizada')
                     console.log(data)
                 },
                 error(e){
+                    cancelarComponente()
                     alert('Erro de requisicao')
                     console.log(e)
                 }
             })
         }
     })
+    function editarComponente(){
+        document.getElementById('save-component').removeAttribute('disabled')
+        document.getElementById('nomeComponente').removeAttribute('disabled')
+        document.getElementById('siglaComponente').removeAttribute('disabled')
+        document.getElementById('delete-component').setAttribute('disabled','disabled')
+        document.getElementById('edit-component').setAttribute('disabled','disabled')
+        document.getElementById('componentes').setAttribute('disabled','disabled')
+        editComponente = true
+    }
 
     //Delete
     function excluirProfessor(){
@@ -322,6 +354,26 @@ if(document.getElementById('form-teacher')!==null){
             }
         })
     }
+    function excluirComponente(){
+        $.ajax({
+            type: 'delete',
+            dataType: 'json',
+            url: 'http://localhost/getlesson_api/componente/'+document.getElementById('componentes').value,
+            data: {
+                jwt: localStorage.getItem('jwt')
+            },
+            success(data){
+                cancelarComponente()
+                alert('Requisicao realizada')
+                console.log(data)
+            },
+            error(e){
+                cancelarComponente()
+                alert('Erro de requisicao')
+                console.log(e)
+            }
+        })
+    }
 
     //Selects preenchidos
     let allCursos = {}
@@ -353,6 +405,7 @@ if(document.getElementById('form-teacher')!==null){
         }
     })
 
+    let allComponentes = {}
     $.ajax({
         type: 'get',
         dataType: 'json',
@@ -361,12 +414,15 @@ if(document.getElementById('form-teacher')!==null){
             jwt: localStorage.getItem('jwt')
         },
         success(data){
+            allComponentes = data
             var selects = "";
-            for(let i=0;i<data.data.length;i++){
-                selects += `<option value="${data.data[i].idComponente}">${data.data[i].nomeComponente}</option>`
+            if(data.data !== "Nenhum Componente Existente"){
+                for(let i=0;i<data.data.length;i++){
+                    selects += `<option value="${data.data[i].idComponente}">${data.data[i].nomeComponente}</option>`
+                }
+                var componentes = document.getElementById('componentes')
+                componentes.innerHTML = selects
             }
-            var componentes = document.getElementById('componentes')
-            componentes.innerHTML = selects
             alert('Requisicao realizada')
             console.log(data)
         },
@@ -482,6 +538,21 @@ if(document.getElementById('form-teacher')!==null){
             }
         }
     })
+    jQuery("#componentes").change(function(){
+        for(let i=0;i<allComponentes.data.length;i++){
+            let id = document.getElementById('componentes').value
+            if(id === allComponentes.data[i].idComponente){
+                let nomeComponente = document.getElementById('nomeComponente')
+                nomeComponente.value = allComponentes.data[i].nomeComponente
+                let siglaComponente = document.getElementById('siglaComponente')
+                siglaComponente.value = allComponentes.data[i].siglaComponente
+                document.getElementById('new-component').setAttribute('disabled','disabled')
+                document.getElementById('edit-component').removeAttribute('disabled')
+                document.getElementById('delete-component').removeAttribute('disabled')
+                document.getElementById('cancel-component').removeAttribute('disabled')
+            }
+        }
+    })
 
     //Botões novo
     function novoProfessor(){
@@ -511,6 +582,14 @@ if(document.getElementById('form-teacher')!==null){
         document.getElementById('idPeriodo').removeAttribute('disabled')
         document.getElementById('new-class').setAttribute('disabled','disabled')
         document.getElementById('turmas').setAttribute('disabled','disabled')
+    }
+    function novoComponente(){
+        document.getElementById('save-component').removeAttribute('disabled')
+        document.getElementById('cancel-component').removeAttribute('disabled')
+        document.getElementById('nomeComponente').removeAttribute('disabled')
+        document.getElementById('siglaComponente').removeAttribute('disabled')
+        document.getElementById('new-component').setAttribute('disabled','disabled')
+        document.getElementById('componentes').setAttribute('disabled','disabled')
     }
 
     //Botões cancelar
@@ -560,6 +639,19 @@ if(document.getElementById('form-teacher')!==null){
         document.getElementById('idPeriodo').selectedIndex = 0
         document.getElementById('turmas').selectedIndex = -1
         document.getElementById('turmas').removeAttribute('disabled')
+    }
+    function cancelarComponente(){
+        document.getElementById('nomeComponente').setAttribute('disabled','disabled')
+        document.getElementById('siglaComponente').setAttribute('disabled','disabled')
+        document.getElementById('new-component').removeAttribute('disabled')
+        document.getElementById('save-component').setAttribute('disabled','disabled')
+        document.getElementById('cancel-component').setAttribute('disabled','disabled')
+        document.getElementById('edit-component').setAttribute('disabled','disabled')
+        document.getElementById('delete-component').setAttribute('disabled','disabled')
+        document.getElementById('nomeComponente').value = ''
+        document.getElementById('siglaComponente').value = ''
+        document.getElementById('componentes').selectedIndex = -1
+        document.getElementById('componentes').removeAttribute('disabled')
     }
 
 }

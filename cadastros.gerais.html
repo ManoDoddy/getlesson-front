@@ -209,23 +209,6 @@
         if(localStorage.getItem('emailUsuario') == null){
             window.location.replace('login.html')
         }
-
-        function btnNewComponent(){
-            document.getElementById('save-component').removeAttribute('disabled')
-            document.getElementById('cancel-component').removeAttribute('disabled')
-            document.getElementById('nomeComponente').removeAttribute('disabled')
-            document.getElementById('siglaComponente').removeAttribute('disabled')
-            document.getElementById('new-component').setAttribute('disabled','disabled')
-        }
-
-        function btnCancelComponent(){
-            document.getElementById('nomeComponente').setAttribute('disabled','disabled')
-            document.getElementById('siglaComponente').setAttribute('disabled','disabled')
-            document.getElementById('cancel-component').setAttribute('disabled','disabled')
-            document.getElementById('save-component').setAttribute('disabled','disabled')
-            document.getElementById('new-component').removeAttribute('disabled')
-        }
-
     </script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
