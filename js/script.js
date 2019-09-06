@@ -166,7 +166,32 @@ if(document.getElementById('form-teacher')!==null){
     form_class.addEventListener('submit', function(e){
         e.preventDefault()
         if(editTurma){ //Editando
-
+            $.ajax({
+                type: 'put',
+                dataType: 'json',
+                url: 'http://localhost/getlesson_api/turma/'+document.getElementById('turmas').value,
+                data: {
+                    nomeTurma: document.getElementById('nomeTurma').value,
+                    semestreTurma: document.getElementById('semestreTurma').value,
+                    anoTurma: document.getElementById('anoTurma').value,
+                    ultimoDiaTurma: document.getElementById('ultimoDiaTurma').value,
+                    idCurso: document.getElementById('idCurso').value,
+                    idPeriodo: document.getElementById('idPeriodo').value,
+                    jwt: localStorage.getItem('jwt')
+                },
+                success(data){
+                    cancelarTurma()
+                    editTurma = false
+                    alert('Requisicao realizada')
+                    console.log(data)
+                },
+                error(e){
+                    cancelarTurma()
+                    editTurma = false
+                    alert('Erro de requisicao')
+                    console.log(e)
+                }
+            })
         }else{ //Cadastrando
             $.ajax({
                 type: 'post',
@@ -182,16 +207,31 @@ if(document.getElementById('form-teacher')!==null){
                     jwt: localStorage.getItem('jwt')
                 },
                 success(data){
+                    cancelarTurma()
                     alert('Requisicao realizada')
                     console.log(data)
                 },
                 error(e){
+                    cancelarTurma()
                     alert('Erro de requisicao')
                     console.log(e)
                 }
             })
         }
     })
+    function editarTurma(){
+        document.getElementById('save-class').removeAttribute('disabled')
+        document.getElementById('nomeTurma').removeAttribute('disabled')
+        document.getElementById('semestreTurma').removeAttribute('disabled')
+        document.getElementById('anoTurma').removeAttribute('disabled')
+        document.getElementById('ultimoDiaTurma').removeAttribute('disabled')
+        document.getElementById('idCurso').removeAttribute('disabled')
+        document.getElementById('idPeriodo').removeAttribute('disabled')
+        document.getElementById('delete-class').setAttribute('disabled','disabled')
+        document.getElementById('edit-class').setAttribute('disabled','disabled')
+        document.getElementById('turmas').setAttribute('disabled','disabled')
+        editTurma = true
+    }
 
     let editComponente = false
     let form_component = document.getElementById('form-component')
@@ -262,6 +302,26 @@ if(document.getElementById('form-teacher')!==null){
             }
         })
     }
+    function excluirTurma(){
+        $.ajax({
+            type: 'delete',
+            dataType: 'json',
+            url: 'http://localhost/getlesson_api/turma/'+document.getElementById('turmas').value,
+            data: {
+                jwt: localStorage.getItem('jwt')
+            },
+            success(data){
+                cancelarTurma()
+                alert('Requisicao realizada')
+                console.log(data)
+            },
+            error(e){
+                cancelarTurma()
+                alert('Erro de requisicao')
+                console.log(e)
+            }
+        })
+    }
 
     //Selects preenchidos
     let allCursos = {}
@@ -316,6 +376,7 @@ if(document.getElementById('form-teacher')!==null){
         }
     })
 
+    let allTurmas = {}
     $.ajax({
         type: 'get',
         dataType: 'json',
@@ -324,12 +385,15 @@ if(document.getElementById('form-teacher')!==null){
             jwt: localStorage.getItem('jwt')
         },
         success(data){
+            allTurmas = data
             var selects = "";
-            for(let i=0;i<data.data.length;i++){
-                selects += `<option value="${data.data[i].idTurma}">${data.data[i].nomeTurma}</option>`
+            if(data.data !== "Turmas Não encontrados"){
+                for(let i=0;i<data.data.length;i++){
+                    selects += `<option value="${data.data[i].idTurma}">${data.data[i].nomeTurma}</option>`
+                }
+                var turmas = document.getElementById('turmas')
+                turmas.innerHTML = selects
             }
-            var turmas = document.getElementById('turmas')
-            turmas.innerHTML = selects
             alert('Requisicao realizada')
             console.log(data)
         },
@@ -395,6 +459,29 @@ if(document.getElementById('form-teacher')!==null){
             }
         }
     })
+    jQuery("#turmas").change(function(){
+        for(let i=0;i<allTurmas.data.length;i++){
+            let id = document.getElementById('turmas').value
+            if(id === allTurmas.data[i].idTurma){
+                let nomeTurma = document.getElementById('nomeTurma')
+                nomeTurma.value = allTurmas.data[i].nomeTurma
+                let semestreTurma = document.getElementById('semestreTurma')
+                semestreTurma.selectedIndex = allTurmas.data[i].semestreTurma-1
+                let anoTurma = document.getElementById('anoTurma')
+                anoTurma.value = allTurmas.data[i].anoTurma
+                let ultimoDiaTurma = document.getElementById('ultimoDiaTurma')
+                ultimoDiaTurma.value = allTurmas.data[i].ultimoDiaTurma
+                let idCurso = document.getElementById('idCurso')
+                idCurso.selectedIndex = allTurmas.data[i].idCurso-1
+                let idPeriodo = document.getElementById('idPeriodo')
+                idPeriodo.selectedIndex = allTurmas.data[i].idPeriodo-1
+                document.getElementById('new-class').setAttribute('disabled','disabled')
+                document.getElementById('edit-class').removeAttribute('disabled')
+                document.getElementById('delete-class').removeAttribute('disabled')
+                document.getElementById('cancel-class').removeAttribute('disabled')
+            }
+        }
+    })
 
     //Botões novo
     function novoProfessor(){
@@ -412,6 +499,18 @@ if(document.getElementById('form-teacher')!==null){
         document.getElementById('nomeCurso').removeAttribute('disabled')
         document.getElementById('new-course').setAttribute('disabled','disabled')
         document.getElementById('cursos').setAttribute('disabled','disabled')
+    }
+    function novaTurma(){
+        document.getElementById('save-class').removeAttribute('disabled')
+        document.getElementById('cancel-class').removeAttribute('disabled')
+        document.getElementById('nomeTurma').removeAttribute('disabled')
+        document.getElementById('semestreTurma').removeAttribute('disabled')
+        document.getElementById('anoTurma').removeAttribute('disabled')
+        document.getElementById('ultimoDiaTurma').removeAttribute('disabled')
+        document.getElementById('idCurso').removeAttribute('disabled')
+        document.getElementById('idPeriodo').removeAttribute('disabled')
+        document.getElementById('new-class').setAttribute('disabled','disabled')
+        document.getElementById('turmas').setAttribute('disabled','disabled')
     }
 
     //Botões cancelar
@@ -440,6 +539,27 @@ if(document.getElementById('form-teacher')!==null){
         document.getElementById('nomeCurso').value = ''
         document.getElementById('cursos').selectedIndex = -1
         document.getElementById('cursos').removeAttribute('disabled')
+    }
+    function cancelarTurma(){
+        document.getElementById('nomeTurma').setAttribute('disabled','disabled')
+        document.getElementById('semestreTurma').setAttribute('disabled','disabled')
+        document.getElementById('anoTurma').setAttribute('disabled','disabled')
+        document.getElementById('ultimoDiaTurma').setAttribute('disabled','disabled')
+        document.getElementById('idCurso').setAttribute('disabled','disabled')
+        document.getElementById('idPeriodo').setAttribute('disabled','disabled')
+        document.getElementById('new-class').removeAttribute('disabled')
+        document.getElementById('save-class').setAttribute('disabled','disabled')
+        document.getElementById('cancel-class').setAttribute('disabled','disabled')
+        document.getElementById('edit-class').setAttribute('disabled','disabled')
+        document.getElementById('delete-class').setAttribute('disabled','disabled')
+        document.getElementById('nomeTurma').value = ''
+        document.getElementById('anoTurma').value = ''
+        document.getElementById('ultimoDiaTurma').value = ''
+        document.getElementById('semestreTurma').selectedIndex = 0
+        document.getElementById('idCurso').selectedIndex = 0
+        document.getElementById('idPeriodo').selectedIndex = 0
+        document.getElementById('turmas').selectedIndex = -1
+        document.getElementById('turmas').removeAttribute('disabled')
     }
 
 }
