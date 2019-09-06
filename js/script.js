@@ -8,12 +8,15 @@ if(document.getElementById('form-login')!==null){
             url: 'http://localhost/getlesson_api/sing-in',
             dataType: 'json',
             data: {
-                email: document.getElementById('emailUsuario').value,
-                pass: document.getElementById('senhaUsuario').value
+                emailUsuario: document.getElementById('emailUsuario').value,
+                senhaUsuario: document.getElementById('senhaUsuario').value
             },
             success: function(data){
-                localStorage.setItem('emailUsuario', document.getElementById('emailUsuario').value)
-                localStorage.setItem('jwt', data.jwt)
+                if(data.error===""){
+                    localStorage.setItem('emailUsuario', document.getElementById('emailUsuario').value)
+                    localStorage.setItem('jwt', data.jwt)
+                    window.location.replace('cadastros.gerais.html')
+                }
                 alert('Requisicao realizada')
                 console.log(data)
             },
@@ -34,103 +37,182 @@ function logout(){
 //Página de Cadastros Gerais
 if(document.getElementById('form-teacher')!==null){
 
-    //Insert
+    //Insert - Update
+    let editProfessor = false
     let form_teacher = document.getElementById('form-teacher')
     form_teacher.addEventListener('submit', function(e){
-        e.preventDefault()
-        $.ajax({
-            type: 'post',
-            url: 'http://localhost/getlesson_api/sing-up',
-            dataType: 'json',
-            data: {
-                name: document.getElementById('nomeUsuario').value,
-                nivel: "2",
-                rm: "00000",
-                email: document.getElementById('emailUsuario').value,
-                pass: document.getElementById('senhaUsuario').value,
-                jwt: localStorage.getItem('jwt')
-            },
-            success: function(data){
-                alert('Requisicao realizada')
-                console.log(data)
-            },
-            error: function (e){
-                alert('Erro de requisicao')
-                console.log(e)
-            }
-        })
+        if(editProfessor){ //Editando
+            e.preventDefault()
+            $.ajax({
+                type: 'put',
+                dataType: 'json',
+                url: 'http://localhost/getlesson_api/user/'+document.getElementById('professores').value,
+                data: {
+                    nomeUsuario: document.getElementById('nomeUsuario').value,
+                    nivel: "2",
+                    rmUsuario: "00000",
+                    senhaUsuario: document.getElementById('senhaUsuario').value,
+                    jwt: localStorage.getItem('jwt')
+                },
+                success(data){
+                    cancelarProfessor()
+                    editProfessor = false
+                    alert('Requisicao realizada')
+                    console.log(data)
+                },
+                error(e){
+                    cancelarProfessor()
+                    editProfessor = false
+                    alert('Erro de requisicao')
+                    console.log(e)
+                }
+            })
+        }else{ //Cadastrando
+            e.preventDefault()
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost/getlesson_api/sing-up',
+                dataType: 'json',
+                data: {
+                    nomeUsuario: document.getElementById('nomeUsuario').value,
+                    nivel: "2",
+                    rmUsuario: "00000",
+                    emailUsuario: document.getElementById('emailUsuario').value,
+                    senhaUsuario: document.getElementById('senhaUsuario').value,
+                    jwt: localStorage.getItem('jwt')
+                },
+                success: function(data){
+                    cancelarProfessor()
+                    alert('Requisicao realizada')
+                    console.log(data)
+                },
+                error: function (e){
+                    alert('Erro de requisicao')
+                    console.log(e)
+                }
+            })
+        }
     })
+    function editarProfessor(){
+        document.getElementById('save-teacher').removeAttribute('disabled')
+        document.getElementById('nomeUsuario').removeAttribute('disabled')
+        document.getElementById('senhaUsuario').removeAttribute('disabled')
+        document.getElementById('delete-teacher').setAttribute('disabled','disabled')
+        document.getElementById('edit-teacher').setAttribute('disabled','disabled')
+        document.getElementById('professores').setAttribute('disabled','disabled')
+        editProfessor = true
+    }
+
+    let editCurso = false
     let form_course = document.getElementById('form-course')
     form_course.addEventListener('submit', function(e){
         e.preventDefault()
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: 'http://localhost/getlesson_api/curso/register',
-            data: {
-                curso: document.getElementById('nomeCurso').value,
-                jwt: localStorage.getItem('jwt')
-            },
-            success(data){
-                alert('Requisicao realizada')
-                console.log(data)
-            },
-            error(e){
-                alert('Erro de requisicao')
-                console.log(e)
-            }
-        })
+        if(editCurso){ //Editando
+
+        }else{ //Cadastrando
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: 'http://localhost/getlesson_api/curso/register',
+                data: {
+                    nomeCurso: document.getElementById('nomeCurso').value,
+                    jwt: localStorage.getItem('jwt')
+                },
+                success(data){
+                    alert('Requisicao realizada')
+                    console.log(data)
+                },
+                error(e){
+                    alert('Erro de requisicao')
+                    console.log(e)
+                }
+            })
+        }
     })
+
+    let editTurma = false
     let form_class = document.getElementById('form-class')
     form_class.addEventListener('submit', function(e){
         e.preventDefault()
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: 'http://localhost/getlesson_api/turma/register',
-            data: {
-                nomeTurma: document.getElementById('nomeTurma').value,
-                semestreTurma: document.getElementById('semestreTurma').value,
-                anoTurma: document.getElementById('anoTurma').value,
-                fimTurma: document.getElementById('ultimoDiaTurma').value,
-                cursoTurma: document.getElementById('idCurso').value,
-                periodoTurma: document.getElementById('idPeriodo').value,
-                jwt: localStorage.getItem('jwt')
-            },
-            success(data){
-                alert('Requisicao realizada')
-                console.log(data)
-            },
-            error(e){
-                alert('Erro de requisicao')
-                console.log(e)
-            }
-        })
+        if(editTurma){ //Editando
+
+        }else{ //Cadastrando
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: 'http://localhost/getlesson_api/turma/register',
+                data: {
+                    nomeTurma: document.getElementById('nomeTurma').value,
+                    semestreTurma: document.getElementById('semestreTurma').value,
+                    anoTurma: document.getElementById('anoTurma').value,
+                    ultimoDiaTurma: document.getElementById('ultimoDiaTurma').value,
+                    idCurso: document.getElementById('idCurso').value,
+                    idPeriodo: document.getElementById('idPeriodo').value,
+                    jwt: localStorage.getItem('jwt')
+                },
+                success(data){
+                    alert('Requisicao realizada')
+                    console.log(data)
+                },
+                error(e){
+                    alert('Erro de requisicao')
+                    console.log(e)
+                }
+            })
+        }
     })
+
+    let editComponente = false
     let form_component = document.getElementById('form-component')
     form_component.addEventListener('submit', function(e){
         e.preventDefault()
+        if(editComponente){ //Editando
+
+        }else{ //Cadastrando
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: 'http://localhost/getlesson_api/componente/register',
+                data: {
+                    nomeComponente: document.getElementById('nomeComponente').value,
+                    siglaComponente: document.getElementById('siglaComponente').value,
+                    jwt: localStorage.getItem('jwt')
+                },
+                success(data){
+                    alert('Requisicao realizada')
+                    console.log(data)
+                },
+                error(e){
+                    alert('Erro de requisicao')
+                    console.log(e)
+                }
+            })
+        }
+    })
+
+    //Delete
+    function excluirProfessor(){
         $.ajax({
-            type: 'post',
+            type: 'delete',
             dataType: 'json',
-            url: 'http://localhost/getlesson_api/componente/register',
+            url: 'http://localhost/getlesson_api/user/'+document.getElementById('professores').value,
             data: {
-                nomeComponente: document.getElementById('nomeComponente').value,
-                sigla: document.getElementById('siglaComponente').value,
                 jwt: localStorage.getItem('jwt')
             },
             success(data){
+                cancelarProfessor()
                 alert('Requisicao realizada')
                 console.log(data)
             },
             error(e){
+                cancelarProfessor()
                 alert('Erro de requisicao')
                 console.log(e)
             }
         })
-    })
+    }
 
-    //SelectAll
+    //Selects preenchidos
     $.ajax({
         type: 'get',
         dataType: 'json',
@@ -147,13 +229,15 @@ if(document.getElementById('form-teacher')!==null){
             selectTurmas.innerHTML = selects
             var cursos = document.getElementById('cursos')
             cursos.innerHTML = selects
-            //console.log(data)
+            alert('Requisicao realizada')
+            console.log(data)
         },
         error(e){
             alert('Erro de requisicao')
             console.log(e)
         }
     })
+
     $.ajax({
         type: 'get',
         dataType: 'json',
@@ -168,13 +252,15 @@ if(document.getElementById('form-teacher')!==null){
             }
             var componentes = document.getElementById('componentes')
             componentes.innerHTML = selects
-            //console.log(data)
+            alert('Requisicao realizada')
+            console.log(data)
         },
         error(e){
             alert('Erro de requisicao')
             console.log(e)
         }
     })
+
     $.ajax({
         type: 'get',
         dataType: 'json',
@@ -189,27 +275,7 @@ if(document.getElementById('form-teacher')!==null){
             }
             var turmas = document.getElementById('turmas')
             turmas.innerHTML = selects
-            //console.log(data)
-        },
-        error(e){
-            alert('Erro de requisicao')
-            console.log(e)
-        }
-    })
-    $.ajax({
-        type: 'get',
-        dataType: 'json',
-        url: 'http://localhost/getlesson_api/user/1',
-        data: {
-            jwt: localStorage.getItem('jwt')
-        },
-        success(data){
-            var selects = "";
-            for(let i=0;i<data.data.length;i++){
-                selects += `<option value="${data.data[i].idUsuario}">${data.data[i].nomeUsuario}</option>`
-            }
-            var professores = document.getElementById('professores')
-            professores.innerHTML = selects
+            alert('Requisicao realizada')
             console.log(data)
         },
         error(e){
@@ -217,4 +283,76 @@ if(document.getElementById('form-teacher')!==null){
             console.log(e)
         }
     })
+
+    let allProfessores = {}
+    $.ajax({
+        type: 'get',
+        dataType: 'json',
+        url: 'http://localhost/getlesson_api/user',
+        data: {
+            jwt: localStorage.getItem('jwt')
+        },
+        success(data){
+            allProfessores = data
+            var selects = "";
+            if(data.data !== "nenhum usuário encontrado"){
+                for(let i=0;i<data.data.length;i++){
+                    selects += `<option value="${data.data[i].idUsuario}">${data.data[i].nomeUsuario}</option>`
+                }
+                var professores = document.getElementById('professores')
+                professores.innerHTML = selects
+            }
+            alert('Requisicao realizada')
+            console.log(data)
+        },
+        error(e){
+            alert('Erro de requisicao')
+            console.log(e)
+        }
+    })
+
+    //Select selecionado
+    jQuery("#professores").change(function(){
+        for(let i=0;i<allProfessores.data.length;i++){
+            let id = document.getElementById('professores').value
+            if(id === allProfessores.data[i].idUsuario){
+                let nomeUsuario = document.getElementById('nomeUsuario')
+                nomeUsuario.value = allProfessores.data[i].nomeUsuario
+                let emailUsuario = document.getElementById('emailUsuario')
+                emailUsuario.value = allProfessores.data[i].emailUsuario
+                document.getElementById('new-teacher').setAttribute('disabled','disabled')
+                document.getElementById('edit-teacher').removeAttribute('disabled')
+                document.getElementById('delete-teacher').removeAttribute('disabled')
+                document.getElementById('cancel-teacher').removeAttribute('disabled')
+            }
+        }
+    })
+
+    //Botões novo
+    function novoProfessor(){
+        document.getElementById('save-teacher').removeAttribute('disabled')
+        document.getElementById('cancel-teacher').removeAttribute('disabled')
+        document.getElementById('nomeUsuario').removeAttribute('disabled')
+        document.getElementById('emailUsuario').removeAttribute('disabled')
+        document.getElementById('senhaUsuario').removeAttribute('disabled')
+        document.getElementById('new-teacher').setAttribute('disabled','disabled')
+        document.getElementById('professores').setAttribute('disabled','disabled')
+    }
+
+    //Botões cancelar
+    function cancelarProfessor(){
+        document.getElementById('nomeUsuario').setAttribute('disabled','disabled')
+        document.getElementById('emailUsuario').setAttribute('disabled','disabled')
+        document.getElementById('senhaUsuario').setAttribute('disabled','disabled')
+        document.getElementById('new-teacher').removeAttribute('disabled')
+        document.getElementById('save-teacher').setAttribute('disabled','disabled')
+        document.getElementById('cancel-teacher').setAttribute('disabled','disabled')
+        document.getElementById('edit-teacher').setAttribute('disabled','disabled')
+        document.getElementById('delete-teacher').setAttribute('disabled','disabled')
+        document.getElementById('nomeUsuario').value = ''
+        document.getElementById('emailUsuario').value = ''
+        document.getElementById('senhaUsuario').value = ''
+        document.getElementById('professores').selectedIndex = -1
+        document.getElementById('professores').removeAttribute('disabled')
+    }
 }

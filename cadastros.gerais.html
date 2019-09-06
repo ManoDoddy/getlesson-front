@@ -78,11 +78,11 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-2"><button type="button" class="btn btn-primary" id="new-teacher" onclick="btnNewTeacher()">Novo</button></div>
+                                <div class="col-2"><button type="button" class="btn btn-primary" id="new-teacher" onclick="novoProfessor()">Novo</button></div>
                                 <div class="col-2"><button type="submit" class="btn btn-success" id="save-teacher" disabled>Salvar</button></div>
-                                <div class="col-2"><button type="button" class="btn btn-secondary" id="edit-teacher" disabled>Editar</button></div>
-                                <div class="col-2"><button type="button" class="btn btn-danger" id="delete-teacher" disabled>Excluir</button></div>
-                                <div class="col-2"><button type="button" class="btn btn-warning" id="cancel-teacher" onclick="btnCancelTeacher()" disabled>Cancelar</button></div>
+                                <div class="col-2"><button type="button" class="btn btn-secondary" id="edit-teacher" disabled onclick="editarProfessor()">Editar</button></div>
+                                <div class="col-2"><button type="button" class="btn btn-danger" id="delete-teacher" disabled onclick="excluirProfessor()">Excluir</button></div>
+                                <div class="col-2"><button type="button" class="btn btn-warning" id="cancel-teacher" onclick="cancelarProfessor()" disabled>Cancelar</button></div>
                             </div>
                         </form>
                     </div>
@@ -102,11 +102,11 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-2"><button type="button" class="btn btn-primary" id="new-course" onclick="btnNewCourse()">Novo</button></div>
+                                <div class="col-2"><button type="button" class="btn btn-primary" id="new-course" onclick="novoCurso()">Novo</button></div>
                                 <div class="col-2"><button type="submit" class="btn btn-success" id="save-course" disabled>Salvar</button></div>
-                                <div class="col-2"><button type="button" class="btn btn-secondary" id="edit-course" disabled>Editar</button></div>
-                                <div class="col-2"><button type="button" class="btn btn-danger" id="delete-course" disabled>Excluir</button></div>
-                                <div class="col-2"><button type="button" class="btn btn-warning" id="cancel-course" onclick="btnCancelCourse()" disabled>Cancelar</button></div>
+                                <div class="col-2"><button type="button" class="btn btn-secondary" id="edit-course" disabled onclick="editarCurso()">Editar</button></div>
+                                <div class="col-2"><button type="button" class="btn btn-danger" id="delete-course" disabled onclick="excluirCurso()">Excluir</button></div>
+                                <div class="col-2"><button type="button" class="btn btn-warning" id="cancel-course" onclick="cancelarCurso()" disabled>Cancelar</button></div>
                             </div>
                         </form>
                     </div>
@@ -162,11 +162,11 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-2"><button type="button" class="btn btn-primary" id="new-class" onclick="btnNewClass()">Novo</button></div>
+                                <div class="col-2"><button type="button" class="btn btn-primary" id="new-class" onclick="novaTurma()">Novo</button></div>
                                 <div class="col-2"><button type="submit" class="btn btn-success" id="save-class" disabled>Salvar</button></div>
-                                <div class="col-2"><button type="button" class="btn btn-secondary" id="edit-class" disabled>Editar</button></div>
-                                <div class="col-2"><button type="button" class="btn btn-danger" id="delete-class" disabled>Excluir</button></div>
-                                <div class="col-2"><button type="button" class="btn btn-warning" id="cancel-class" onclick="btnCancelClass()" disabled>Cancelar</button></div>
+                                <div class="col-2"><button type="button" class="btn btn-secondary" id="edit-class" disabled onclick="editarTurma()">Editar</button></div>
+                                <div class="col-2"><button type="button" class="btn btn-danger" id="delete-class" disabled onclick="excluirTurma()">Excluir</button></div>
+                                <div class="col-2"><button type="button" class="btn btn-warning" id="cancel-class" onclick="cancelarTurma()" disabled>Cancelar</button></div>
                             </div>
                         </form>
                     </div>
@@ -192,11 +192,11 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-2"><button type="button" class="btn btn-primary" id="new-component" onclick="btnNewComponent()">Novo</button></div>
+                                <div class="col-2"><button type="button" class="btn btn-primary" id="new-component" onclick="novoComponente()">Novo</button></div>
                                 <div class="col-2"><button type="submit" class="btn btn-success" id="save-component" disabled>Salvar</button></div>
-                                <div class="col-2"><button type="button" class="btn btn-secondary" id="edit-component" disabled>Editar</button></div>
-                                <div class="col-2"><button type="button" class="btn btn-danger" id="delete-component" disabled>Excluir</button></div>
-                                <div class="col-2"><button type="button" class="btn btn-warning" id="cancel-component" onclick="btnCancelComponent()" disabled>Cancelar</button></div>
+                                <div class="col-2"><button type="button" class="btn btn-secondary" id="edit-component" disabled onclick="editarComponente()">Editar</button></div>
+                                <div class="col-2"><button type="button" class="btn btn-danger" id="delete-component" disabled onclick="excluirComponente()">Excluir</button></div>
+                                <div class="col-2"><button type="button" class="btn btn-warning" id="cancel-component" disabled onclick="cancelarComponente()">Cancelar</button></div>
                             </div>
                         </form>
                     </div>
@@ -208,24 +208,6 @@
     <script>
         if(localStorage.getItem('emailUsuario') == null){
             window.location.replace('login.html')
-        }
-
-        function btnNewTeacher(){
-            document.getElementById('save-teacher').removeAttribute('disabled')
-            document.getElementById('cancel-teacher').removeAttribute('disabled')
-            document.getElementById('nomeUsuario').removeAttribute('disabled')
-            document.getElementById('emailUsuario').removeAttribute('disabled')
-            document.getElementById('senhaUsuario').removeAttribute('disabled')
-            document.getElementById('new-teacher').setAttribute('disabled','disabled')
-        }
-
-        function btnCancelTeacher(){
-            document.getElementById('nomeUsuario').setAttribute('disabled','disabled')
-            document.getElementById('emailUsuario').setAttribute('disabled','disabled')
-            document.getElementById('senhaUsuario').setAttribute('disabled','disabled')
-            document.getElementById('cancel-teacher').setAttribute('disabled','disabled')
-            document.getElementById('save-teacher').setAttribute('disabled','disabled')
-            document.getElementById('new-teacher').removeAttribute('disabled')
         }
 
         function btnNewCourse(){
