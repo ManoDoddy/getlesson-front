@@ -87,6 +87,7 @@ if(document.getElementById('form-teacher')!==null){
                     console.log(data)
                 },
                 error: function (e){
+                    cancelarProfessor()
                     alert('Erro de requisicao')
                     console.log(e)
                 }
@@ -108,7 +109,27 @@ if(document.getElementById('form-teacher')!==null){
     form_course.addEventListener('submit', function(e){
         e.preventDefault()
         if(editCurso){ //Editando
-
+            $.ajax({
+                type: 'put',
+                dataType: 'json',
+                url: 'http://localhost/getlesson_api/curso/'+document.getElementById('cursos').value,
+                data: {
+                    nomeCurso: document.getElementById('nomeCurso').value,
+                    jwt: localStorage.getItem('jwt')
+                },
+                success(data){
+                    cancelarCurso()
+                    editCurso = false
+                    alert('Requisicao realizada')
+                    console.log(data)
+                },
+                error(e){
+                    cancelarCurso()
+                    editCurso = false
+                    alert('Erro de requisicao')
+                    console.log(e)
+                }
+            })
         }else{ //Cadastrando
             $.ajax({
                 type: 'post',
@@ -119,16 +140,26 @@ if(document.getElementById('form-teacher')!==null){
                     jwt: localStorage.getItem('jwt')
                 },
                 success(data){
+                    cancelarCurso()
                     alert('Requisicao realizada')
                     console.log(data)
                 },
                 error(e){
+                    cancelarCurso()
                     alert('Erro de requisicao')
                     console.log(e)
                 }
             })
         }
     })
+    function editarCurso(){
+        document.getElementById('save-course').removeAttribute('disabled')
+        document.getElementById('nomeCurso').removeAttribute('disabled')
+        document.getElementById('delete-course').setAttribute('disabled','disabled')
+        document.getElementById('edit-course').setAttribute('disabled','disabled')
+        document.getElementById('cursos').setAttribute('disabled','disabled')
+        editCurso = true
+    }
 
     let editTurma = false
     let form_class = document.getElementById('form-class')
@@ -211,8 +242,29 @@ if(document.getElementById('form-teacher')!==null){
             }
         })
     }
+    function excluirCurso(){
+        $.ajax({
+            type: 'delete',
+            dataType: 'json',
+            url: 'http://localhost/getlesson_api/curso/'+document.getElementById('cursos').value,
+            data: {
+                jwt: localStorage.getItem('jwt')
+            },
+            success(data){
+                cancelarCurso()
+                alert('Requisicao realizada')
+                console.log(data)
+            },
+            error(e){
+                cancelarCurso()
+                alert('Erro de requisicao')
+                console.log(e)
+            }
+        })
+    }
 
     //Selects preenchidos
+    let allCursos = {}
     $.ajax({
         type: 'get',
         dataType: 'json',
@@ -221,14 +273,17 @@ if(document.getElementById('form-teacher')!==null){
             jwt: localStorage.getItem('jwt')
         },
         success(data){
+            allCursos = data
             var selects = "";
-            for(let i=0;i<data.data.length;i++){
-                selects += `<option value="${data.data[i].idCurso}">${data.data[i].nomeCurso}</option>`
+            if(data.data !== "Cursos Não encontrados"){
+                for(let i=0;i<data.data.length;i++){
+                    selects += `<option value="${data.data[i].idCurso}">${data.data[i].nomeCurso}</option>`
+                }
+                var selectTurmas = document.getElementById('idCurso')
+                selectTurmas.innerHTML = selects
+                var cursos = document.getElementById('cursos')
+                cursos.innerHTML = selects
             }
-            var selectTurmas = document.getElementById('idCurso')
-            selectTurmas.innerHTML = selects
-            var cursos = document.getElementById('cursos')
-            cursos.innerHTML = selects
             alert('Requisicao realizada')
             console.log(data)
         },
@@ -327,6 +382,19 @@ if(document.getElementById('form-teacher')!==null){
             }
         }
     })
+    jQuery("#cursos").change(function(){
+        for(let i=0;i<allCursos.data.length;i++){
+            let id = document.getElementById('cursos').value
+            if(id === allCursos.data[i].idCurso){
+                let nomeCurso = document.getElementById('nomeCurso')
+                nomeCurso.value = allCursos.data[i].nomeCurso
+                document.getElementById('new-course').setAttribute('disabled','disabled')
+                document.getElementById('edit-course').removeAttribute('disabled')
+                document.getElementById('delete-course').removeAttribute('disabled')
+                document.getElementById('cancel-course').removeAttribute('disabled')
+            }
+        }
+    })
 
     //Botões novo
     function novoProfessor(){
@@ -337,6 +405,13 @@ if(document.getElementById('form-teacher')!==null){
         document.getElementById('senhaUsuario').removeAttribute('disabled')
         document.getElementById('new-teacher').setAttribute('disabled','disabled')
         document.getElementById('professores').setAttribute('disabled','disabled')
+    }
+    function novoCurso(){
+        document.getElementById('save-course').removeAttribute('disabled')
+        document.getElementById('cancel-course').removeAttribute('disabled')
+        document.getElementById('nomeCurso').removeAttribute('disabled')
+        document.getElementById('new-course').setAttribute('disabled','disabled')
+        document.getElementById('cursos').setAttribute('disabled','disabled')
     }
 
     //Botões cancelar
@@ -355,4 +430,16 @@ if(document.getElementById('form-teacher')!==null){
         document.getElementById('professores').selectedIndex = -1
         document.getElementById('professores').removeAttribute('disabled')
     }
+    function cancelarCurso(){
+        document.getElementById('nomeCurso').setAttribute('disabled','disabled')
+        document.getElementById('new-course').removeAttribute('disabled')
+        document.getElementById('save-course').setAttribute('disabled','disabled')
+        document.getElementById('cancel-course').setAttribute('disabled','disabled')
+        document.getElementById('edit-course').setAttribute('disabled','disabled')
+        document.getElementById('delete-course').setAttribute('disabled','disabled')
+        document.getElementById('nomeCurso').value = ''
+        document.getElementById('cursos').selectedIndex = -1
+        document.getElementById('cursos').removeAttribute('disabled')
+    }
+
 }
