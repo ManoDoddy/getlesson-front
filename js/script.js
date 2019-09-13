@@ -56,12 +56,14 @@ if(document.getElementById('form-teacher')!==null){
                 },
                 success(data){
                     cancelarProfessor()
+                    preencherProfessores()
                     editProfessor = false
                     alert('Requisicao realizada')
                     console.log(data)
                 },
                 error(e){
                     cancelarProfessor()
+                    preencherProfessores()
                     editProfessor = false
                     alert('Erro de requisicao')
                     console.log(e)
@@ -82,27 +84,20 @@ if(document.getElementById('form-teacher')!==null){
                     jwt: localStorage.getItem('jwt')
                 },
                 success: function(data){
+                    preencherProfessores()
                     cancelarProfessor()
                     alert('Requisicao realizada')
                     console.log(data)
                 },
                 error: function (e){
                     cancelarProfessor()
+                    preencherProfessores()
                     alert('Erro de requisicao')
                     console.log(e)
                 }
             })
         }
     })
-    function editarProfessor(){
-        document.getElementById('save-teacher').removeAttribute('disabled')
-        document.getElementById('nomeUsuario').removeAttribute('disabled')
-        document.getElementById('senhaUsuario').removeAttribute('disabled')
-        document.getElementById('delete-teacher').setAttribute('disabled','disabled')
-        document.getElementById('edit-teacher').setAttribute('disabled','disabled')
-        document.getElementById('professores').setAttribute('disabled','disabled')
-        editProfessor = true
-    }
 
     let editCurso = false
     let form_course = document.getElementById('form-course')
@@ -119,12 +114,14 @@ if(document.getElementById('form-teacher')!==null){
                 },
                 success(data){
                     cancelarCurso()
+                    preencherCursos()
                     editCurso = false
                     alert('Requisicao realizada')
                     console.log(data)
                 },
                 error(e){
                     cancelarCurso()
+                    preencherCursos()
                     editCurso = false
                     alert('Erro de requisicao')
                     console.log(e)
@@ -141,25 +138,19 @@ if(document.getElementById('form-teacher')!==null){
                 },
                 success(data){
                     cancelarCurso()
+                    preencherCursos()
                     alert('Requisicao realizada')
                     console.log(data)
                 },
                 error(e){
                     cancelarCurso()
+                    preencherCursos()
                     alert('Erro de requisicao')
                     console.log(e)
                 }
             })
         }
     })
-    function editarCurso(){
-        document.getElementById('save-course').removeAttribute('disabled')
-        document.getElementById('nomeCurso').removeAttribute('disabled')
-        document.getElementById('delete-course').setAttribute('disabled','disabled')
-        document.getElementById('edit-course').setAttribute('disabled','disabled')
-        document.getElementById('cursos').setAttribute('disabled','disabled')
-        editCurso = true
-    }
 
     let editTurma = false
     let form_class = document.getElementById('form-class')
@@ -181,12 +172,14 @@ if(document.getElementById('form-teacher')!==null){
                 },
                 success(data){
                     cancelarTurma()
+                    preencherTurmas()
                     editTurma = false
                     alert('Requisicao realizada')
                     console.log(data)
                 },
                 error(e){
                     cancelarTurma()
+                    preencherTurmas()
                     editTurma = false
                     alert('Erro de requisicao')
                     console.log(e)
@@ -208,30 +201,19 @@ if(document.getElementById('form-teacher')!==null){
                 },
                 success(data){
                     cancelarTurma()
+                    preencherTurmas()
                     alert('Requisicao realizada')
                     console.log(data)
                 },
                 error(e){
                     cancelarTurma()
+                    preencherTurmas()
                     alert('Erro de requisicao')
                     console.log(e)
                 }
             })
         }
     })
-    function editarTurma(){
-        document.getElementById('save-class').removeAttribute('disabled')
-        document.getElementById('nomeTurma').removeAttribute('disabled')
-        document.getElementById('semestreTurma').removeAttribute('disabled')
-        document.getElementById('anoTurma').removeAttribute('disabled')
-        document.getElementById('ultimoDiaTurma').removeAttribute('disabled')
-        document.getElementById('idCurso').removeAttribute('disabled')
-        document.getElementById('idPeriodo').removeAttribute('disabled')
-        document.getElementById('delete-class').setAttribute('disabled','disabled')
-        document.getElementById('edit-class').setAttribute('disabled','disabled')
-        document.getElementById('turmas').setAttribute('disabled','disabled')
-        editTurma = true
-    }
 
     let editComponente = false
     let form_component = document.getElementById('form-component')
@@ -249,12 +231,14 @@ if(document.getElementById('form-teacher')!==null){
                 },
                 success(data){
                     cancelarComponente()
+                    preencherComponentes()
                     editComponente = false
                     alert('Requisicao realizada')
                     console.log(data)
                 },
                 error(e){
                     cancelarComponente()
+                    preencherComponentes()
                     editComponente = false
                     alert('Erro de requisicao')
                     console.log(e)
@@ -272,17 +256,37 @@ if(document.getElementById('form-teacher')!==null){
                 },
                 success(data){
                     cancelarComponente()
+                    preencherComponentes()
                     alert('Requisicao realizada')
                     console.log(data)
                 },
                 error(e){
                     cancelarComponente()
+                    preencherComponentes()
                     alert('Erro de requisicao')
                     console.log(e)
                 }
             })
         }
     })
+
+    function editarProfessor(){
+        document.getElementById('save-teacher').removeAttribute('disabled')
+        document.getElementById('nomeUsuario').removeAttribute('disabled')
+        document.getElementById('senhaUsuario').removeAttribute('disabled')
+        document.getElementById('delete-teacher').setAttribute('disabled','disabled')
+        document.getElementById('edit-teacher').setAttribute('disabled','disabled')
+        document.getElementById('professores').setAttribute('disabled','disabled')
+        editProfessor = true
+    }
+    function editarCurso(){
+        document.getElementById('save-course').removeAttribute('disabled')
+        document.getElementById('nomeCurso').removeAttribute('disabled')
+        document.getElementById('delete-course').setAttribute('disabled','disabled')
+        document.getElementById('edit-course').setAttribute('disabled','disabled')
+        document.getElementById('cursos').setAttribute('disabled','disabled')
+        editCurso = true
+    }
     function editarComponente(){
         document.getElementById('save-component').removeAttribute('disabled')
         document.getElementById('nomeComponente').removeAttribute('disabled')
@@ -291,6 +295,19 @@ if(document.getElementById('form-teacher')!==null){
         document.getElementById('edit-component').setAttribute('disabled','disabled')
         document.getElementById('componentes').setAttribute('disabled','disabled')
         editComponente = true
+    }
+    function editarTurma(){
+        document.getElementById('save-class').removeAttribute('disabled')
+        document.getElementById('nomeTurma').removeAttribute('disabled')
+        document.getElementById('semestreTurma').removeAttribute('disabled')
+        document.getElementById('anoTurma').removeAttribute('disabled')
+        document.getElementById('ultimoDiaTurma').removeAttribute('disabled')
+        document.getElementById('idCurso').removeAttribute('disabled')
+        document.getElementById('idPeriodo').removeAttribute('disabled')
+        document.getElementById('delete-class').setAttribute('disabled','disabled')
+        document.getElementById('edit-class').setAttribute('disabled','disabled')
+        document.getElementById('turmas').setAttribute('disabled','disabled')
+        editTurma = true
     }
 
     //Delete
@@ -304,11 +321,13 @@ if(document.getElementById('form-teacher')!==null){
             },
             success(data){
                 cancelarProfessor()
+                preencherProfessores()
                 alert('Requisicao realizada')
                 console.log(data)
             },
             error(e){
                 cancelarProfessor()
+                preencherProfessores()
                 alert('Erro de requisicao')
                 console.log(e)
             }
@@ -324,11 +343,13 @@ if(document.getElementById('form-teacher')!==null){
             },
             success(data){
                 cancelarCurso()
+                preencherCursos()
                 alert('Requisicao realizada')
                 console.log(data)
             },
             error(e){
                 cancelarCurso()
+                preencherCursos()
                 alert('Erro de requisicao')
                 console.log(e)
             }
@@ -344,11 +365,13 @@ if(document.getElementById('form-teacher')!==null){
             },
             success(data){
                 cancelarTurma()
+                preencherTurmas()
                 alert('Requisicao realizada')
                 console.log(data)
             },
             error(e){
                 cancelarTurma()
+                preencherTurmas()
                 alert('Erro de requisicao')
                 console.log(e)
             }
@@ -364,11 +387,13 @@ if(document.getElementById('form-teacher')!==null){
             },
             success(data){
                 cancelarComponente()
+                preencherComponentes()
                 alert('Requisicao realizada')
                 console.log(data)
             },
             error(e){
                 cancelarComponente()
+                preencherComponentes()
                 alert('Erro de requisicao')
                 console.log(e)
             }
@@ -377,114 +402,126 @@ if(document.getElementById('form-teacher')!==null){
 
     //Selects preenchidos
     let allCursos = {}
-    $.ajax({
-        type: 'get',
-        dataType: 'json',
-        url: 'http://localhost/getlesson_api/curso',
-        data: {
-            jwt: localStorage.getItem('jwt')
-        },
-        success(data){
-            allCursos = data
-            var selects = "";
-            if(data.data !== "Cursos Não encontrados"){
-                for(let i=0;i<data.data.length;i++){
-                    selects += `<option value="${data.data[i].idCurso}">${data.data[i].nomeCurso}</option>`
+    function preencherCursos(){
+        $.ajax({
+            type: 'get',
+            dataType: 'json',
+            url: 'http://localhost/getlesson_api/curso',
+            data: {
+                jwt: localStorage.getItem('jwt')
+            },
+            success(data){
+                allCursos = data
+                var selects = "";
+                if(data.data !== "Cursos Não encontrados"){
+                    for(let i=0;i<data.data.length;i++){
+                        selects += `<option value="${data.data[i].idCurso}">${data.data[i].nomeCurso}</option>`
+                    }
+                    var selectTurmas = document.getElementById('idCurso')
+                    selectTurmas.innerHTML = selects
+                    var cursos = document.getElementById('cursos')
+                    cursos.innerHTML = selects
+                }else if(data.data === "Cursos Não encontrados"){
+                    $("#cursos").empty()
                 }
-                var selectTurmas = document.getElementById('idCurso')
-                selectTurmas.innerHTML = selects
-                var cursos = document.getElementById('cursos')
-                cursos.innerHTML = selects
+                console.log(data)
+            },
+            error(e){
+                alert('Erro de requisicao')
+                console.log(e)
             }
-            alert('Requisicao realizada')
-            console.log(data)
-        },
-        error(e){
-            alert('Erro de requisicao')
-            console.log(e)
-        }
-    })
+        })
+    }preencherCursos()
 
     let allComponentes = {}
-    $.ajax({
-        type: 'get',
-        dataType: 'json',
-        url: 'http://localhost/getlesson_api/componente',
-        data: {
-            jwt: localStorage.getItem('jwt')
-        },
-        success(data){
-            allComponentes = data
-            var selects = "";
-            if(data.data !== "Nenhum Componente Existente"){
-                for(let i=0;i<data.data.length;i++){
-                    selects += `<option value="${data.data[i].idComponente}">${data.data[i].nomeComponente}</option>`
+    function preencherComponentes(){
+        $.ajax({
+            type: 'get',
+            dataType: 'json',
+            url: 'http://localhost/getlesson_api/componente',
+            data: {
+                jwt: localStorage.getItem('jwt')
+            },
+            success(data){
+                allComponentes = data
+                var selects = "";
+                if(data.data !== "Nenhum Componente Existente"){
+                    for(let i=0;i<data.data.length;i++){
+                        selects += `<option value="${data.data[i].idComponente}">${data.data[i].nomeComponente}</option>`
+                    }
+                    var componentes = document.getElementById('componentes')
+                    componentes.innerHTML = selects
+                }else if(data.data === "Nenhum Componente Existente"){
+                    $("#componentes").empty()
                 }
-                var componentes = document.getElementById('componentes')
-                componentes.innerHTML = selects
+                console.log(data)
+            },
+            error(e){
+                alert('Erro de requisicao')
+                console.log(e)
             }
-            alert('Requisicao realizada')
-            console.log(data)
-        },
-        error(e){
-            alert('Erro de requisicao')
-            console.log(e)
-        }
-    })
+        })
+    }preencherComponentes()
 
     let allTurmas = {}
-    $.ajax({
-        type: 'get',
-        dataType: 'json',
-        url: 'http://localhost/getlesson_api/turma',
-        data: {
-            jwt: localStorage.getItem('jwt')
-        },
-        success(data){
-            allTurmas = data
-            var selects = "";
-            if(data.data !== "Turmas Não encontrados"){
-                for(let i=0;i<data.data.length;i++){
-                    selects += `<option value="${data.data[i].idTurma}">${data.data[i].nomeTurma}</option>`
+    function preencherTurmas(){
+        $.ajax({
+            type: 'get',
+            dataType: 'json',
+            url: 'http://localhost/getlesson_api/turma',
+            data: {
+                jwt: localStorage.getItem('jwt')
+            },
+            success(data){
+                allTurmas = data
+                var selects = "";
+                if(data.data !== "Turmas Não encontrados"){
+                    for(let i=0;i<data.data.length;i++){
+                        selects += `<option value="${data.data[i].idTurma}">${data.data[i].nomeTurma}</option>`
+                    }
+                    var turmas = document.getElementById('turmas')
+                    turmas.innerHTML = selects
+                }else if(data.data === "Turmas Não encontrados"){
+                    $("#turmas").empty()
                 }
-                var turmas = document.getElementById('turmas')
-                turmas.innerHTML = selects
+                console.log(data)
+            },
+            error(e){
+                alert('Erro de requisicao')
+                console.log(e)
             }
-            alert('Requisicao realizada')
-            console.log(data)
-        },
-        error(e){
-            alert('Erro de requisicao')
-            console.log(e)
-        }
-    })
+        })
+    }preencherTurmas()
 
     let allProfessores = {}
-    $.ajax({
-        type: 'get',
-        dataType: 'json',
-        url: 'http://localhost/getlesson_api/user',
-        data: {
-            jwt: localStorage.getItem('jwt')
-        },
-        success(data){
-            allProfessores = data
-            var selects = "";
-            if(data.data !== "nenhum usuário encontrado"){
-                for(let i=0;i<data.data.length;i++){
-                    selects += `<option value="${data.data[i].idUsuario}">${data.data[i].nomeUsuario}</option>`
+    function preencherProfessores(){
+        $.ajax({
+            type: 'get',
+            dataType: 'json',
+            url: 'http://localhost/getlesson_api/user',
+            data: {
+                jwt: localStorage.getItem('jwt')
+            },
+            success(data){
+                allProfessores = data
+                var selects = "";
+                if(data.data !== "nenhum usuário encontrado"){
+                    for(let i=0;i<data.data.length;i++){
+                        selects += `<option value="${data.data[i].idUsuario}">${data.data[i].nomeUsuario}</option>`
+                    }
+                    var professores = document.getElementById('professores')
+                    professores.innerHTML = selects
+                }else if(data.data === "nenhum usuário encontrado"){
+                    $("#professores").empty()
                 }
-                var professores = document.getElementById('professores')
-                professores.innerHTML = selects
+                console.log(data)
+            },
+            error(e){
+                alert('Erro de requisicao')
+                console.log(e)
             }
-            alert('Requisicao realizada')
-            console.log(data)
-        },
-        error(e){
-            alert('Erro de requisicao')
-            console.log(e)
-        }
-    })
+        })
+    }preencherProfessores()
 
     //Select selecionado
     jQuery("#professores").change(function(){
