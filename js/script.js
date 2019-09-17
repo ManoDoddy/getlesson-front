@@ -575,14 +575,19 @@ if(document.getElementById('form-teacher')!==null){
                 anoTurma.value = allTurmas.data[i].anoTurma
                 let ultimoDiaTurma = document.getElementById('ultimoDiaTurma')
                 ultimoDiaTurma.value = allTurmas.data[i].ultimoDiaTurma
-                let idCurso = document.getElementById('idCurso')
-                idCurso.selectedIndex = allTurmas.data[i].idCurso-1
                 let idPeriodo = document.getElementById('idPeriodo')
                 idPeriodo.selectedIndex = allTurmas.data[i].idPeriodo-1
                 document.getElementById('new-class').setAttribute('disabled','disabled')
                 document.getElementById('edit-class').removeAttribute('disabled')
                 document.getElementById('delete-class').removeAttribute('disabled')
                 document.getElementById('cancel-class').removeAttribute('disabled')
+
+                let comboCurso = document.getElementById('idCurso')
+                for(let y=0;y<comboCurso.length;y++){
+                    if(allTurmas.data[i].idCurso === comboCurso.options[y].value){
+                        comboCurso.selectedIndex = y
+                    }
+                }
             }
         }
     })
@@ -594,14 +599,24 @@ if(document.getElementById('form-teacher')!==null){
                 nomeComponente.value = allComponentes.data[i].nomeComponente
                 let siglaComponente = document.getElementById('siglaComponente')
                 siglaComponente.value = allComponentes.data[i].siglaComponente
-                let idTurma = document.getElementById('idTurma')
-                idTurma.selectedIndex = allComponentes.data[i].idTurma-1
-                let idUsuario = document.getElementById('idUsuario')
-                idUsuario.selectedIndex = allComponentes.data[i].idUsuario-1
                 document.getElementById('new-component').setAttribute('disabled','disabled')
                 document.getElementById('edit-component').removeAttribute('disabled')
                 document.getElementById('delete-component').removeAttribute('disabled')
                 document.getElementById('cancel-component').removeAttribute('disabled')
+
+                let comboTurma = document.getElementById('idTurma')
+                for(let y=0;y<comboTurma.length;y++){
+                    if(allComponentes.data[i].idTurma === comboTurma.options[y].value){
+                        comboTurma.selectedIndex = y
+                    }
+                }
+
+                let comboProfessor = document.getElementById('idUsuario')
+                for(let y=0;y<comboProfessor.length;y++){
+                    if(allComponentes.data[i].idUsuario === comboProfessor.options[y].value){
+                        comboProfessor.selectedIndex = y
+                    }
+                }
             }
         }
     })
