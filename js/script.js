@@ -131,7 +131,7 @@ if(document.getElementById('form-teacher')!==null){
             $.ajax({
                 type: 'post',
                 dataType: 'json',
-                url: 'http://localhost/getlesson_api/curso/register',
+                url: 'http://localhost/getlesson_api/curso/add',
                 data: {
                     nomeCurso: document.getElementById('nomeCurso').value,
                     jwt: localStorage.getItem('jwt')
@@ -189,7 +189,7 @@ if(document.getElementById('form-teacher')!==null){
             $.ajax({
                 type: 'post',
                 dataType: 'json',
-                url: 'http://localhost/getlesson_api/turma/register',
+                url: 'http://localhost/getlesson_api/turma/add',
                 data: {
                     nomeTurma: document.getElementById('nomeTurma').value,
                     semestreTurma: document.getElementById('semestreTurma').value,
@@ -227,6 +227,8 @@ if(document.getElementById('form-teacher')!==null){
                 data: {
                     nomeComponente: document.getElementById('nomeComponente').value,
                     siglaComponente: document.getElementById('siglaComponente').value,
+                    idTurma: document.getElementById('idTurma').value,
+                    idUsuario: document.getElementById('idUsuario').value,
                     jwt: localStorage.getItem('jwt')
                 },
                 success(data){
@@ -248,10 +250,12 @@ if(document.getElementById('form-teacher')!==null){
             $.ajax({
                 type: 'post',
                 dataType: 'json',
-                url: 'http://localhost/getlesson_api/componente/register',
+                url: 'http://localhost/getlesson_api/componente/add',
                 data: {
                     nomeComponente: document.getElementById('nomeComponente').value,
                     siglaComponente: document.getElementById('siglaComponente').value,
+                    idTurma: document.getElementById('idTurma').value,
+                    idUsuario: document.getElementById('idUsuario').value,
                     jwt: localStorage.getItem('jwt')
                 },
                 success(data){
@@ -291,6 +295,8 @@ if(document.getElementById('form-teacher')!==null){
         document.getElementById('save-component').removeAttribute('disabled')
         document.getElementById('nomeComponente').removeAttribute('disabled')
         document.getElementById('siglaComponente').removeAttribute('disabled')
+        document.getElementById('idTurma').removeAttribute('disabled')
+        document.getElementById('idUsuario').removeAttribute('disabled')
         document.getElementById('delete-component').setAttribute('disabled','disabled')
         document.getElementById('edit-component').setAttribute('disabled','disabled')
         document.getElementById('componentes').setAttribute('disabled','disabled')
@@ -481,8 +487,11 @@ if(document.getElementById('form-teacher')!==null){
                     }
                     var turmas = document.getElementById('turmas')
                     turmas.innerHTML = selects
+                    var idTurma = document.getElementById('idTurma')
+                    idTurma.innerHTML = selects
                 }else if(data.data === "Turmas Não encontrados"){
                     $("#turmas").empty()
+                    $("#idTurma").empty()
                 }
                 console.log(data)
             },
@@ -511,6 +520,8 @@ if(document.getElementById('form-teacher')!==null){
                     }
                     var professores = document.getElementById('professores')
                     professores.innerHTML = selects
+                    var idUsuario = document.getElementById('idUsuario')
+                    idUsuario.innerHTML = selects
                 }else if(data.data === "nenhum usuário encontrado"){
                     $("#professores").empty()
                 }
@@ -583,6 +594,10 @@ if(document.getElementById('form-teacher')!==null){
                 nomeComponente.value = allComponentes.data[i].nomeComponente
                 let siglaComponente = document.getElementById('siglaComponente')
                 siglaComponente.value = allComponentes.data[i].siglaComponente
+                let idTurma = document.getElementById('idTurma')
+                idTurma.selectedIndex = allComponentes.data[i].idTurma-1
+                let idUsuario = document.getElementById('idUsuario')
+                idUsuario.selectedIndex = allComponentes.data[i].idUsuario-1
                 document.getElementById('new-component').setAttribute('disabled','disabled')
                 document.getElementById('edit-component').removeAttribute('disabled')
                 document.getElementById('delete-component').removeAttribute('disabled')
@@ -625,6 +640,8 @@ if(document.getElementById('form-teacher')!==null){
         document.getElementById('cancel-component').removeAttribute('disabled')
         document.getElementById('nomeComponente').removeAttribute('disabled')
         document.getElementById('siglaComponente').removeAttribute('disabled')
+        document.getElementById('idTurma').removeAttribute('disabled')
+        document.getElementById('idUsuario').removeAttribute('disabled')
         document.getElementById('new-component').setAttribute('disabled','disabled')
         document.getElementById('componentes').setAttribute('disabled','disabled')
     }
@@ -680,6 +697,8 @@ if(document.getElementById('form-teacher')!==null){
     function cancelarComponente(){
         document.getElementById('nomeComponente').setAttribute('disabled','disabled')
         document.getElementById('siglaComponente').setAttribute('disabled','disabled')
+        document.getElementById('idTurma').setAttribute('disabled','disabled')
+        document.getElementById('idUsuario').setAttribute('disabled','disabled')
         document.getElementById('new-component').removeAttribute('disabled')
         document.getElementById('save-component').setAttribute('disabled','disabled')
         document.getElementById('cancel-component').setAttribute('disabled','disabled')
@@ -687,6 +706,8 @@ if(document.getElementById('form-teacher')!==null){
         document.getElementById('delete-component').setAttribute('disabled','disabled')
         document.getElementById('nomeComponente').value = ''
         document.getElementById('siglaComponente').value = ''
+        document.getElementById('idTurma').selectedIndex = 0
+        document.getElementById('idUsuario').selectedIndex = 0
         document.getElementById('componentes').selectedIndex = -1
         document.getElementById('componentes').removeAttribute('disabled')
     }
