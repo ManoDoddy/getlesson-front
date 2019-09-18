@@ -728,3 +728,104 @@ if(document.getElementById('form-teacher')!==null){
     }
 
 }
+
+//Página de Criar Atividade
+if(document.getElementById('form-activity')!==null){
+
+    //Nova Pergunta
+    let numeroPergunta = 0
+    function novaPergunta(){
+        numeroPergunta++
+        let perguntas = document.getElementById('perguntas').innerHTML
+        pergunta =
+        `<div class="form-group row">
+            <div class="col-12">
+                <label for="pergunta${numeroPergunta}">Pergunta ${numeroPergunta}</label>
+                <textarea class="form-control" id="pergunta${numeroPergunta}" rows="4"></textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-1">
+                <input class="form-check-input ml-4" type="radio" name="certa${numeroPergunta}" id="1certa${numeroPergunta}">
+                <label for="1certa${numeroPergunta}" class="form-check-label">A)</label>
+            </div>
+            <div class="col-11">
+                <input type="text" class="form-control" id="1resposta${numeroPergunta}" name="1resposta${numeroPergunta}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-1">
+                <input class="form-check-input ml-4" type="radio" name="certa${numeroPergunta}" id="2certa${numeroPergunta}">
+                <label for="2certa${numeroPergunta}" class="form-check-label">B)</label>
+            </div>
+            <div class="col-11">
+                <input type="text" class="form-control" id="2resposta${numeroPergunta}" name="2resposta${numeroPergunta}">
+            </div>
+        </div><hr>`
+        perguntas = perguntas + pergunta
+        document.getElementById('perguntas').innerHTML = perguntas
+    }
+
+    //Cadastrar Atividade
+    function cadastrarAtividade(){
+        if(numeroPergunta !== 0){
+            let info = [
+                1,
+                '0000/00/00',
+                '0000/00/00',
+                document.getElementById('nomeAtividade').value
+            ]
+
+            for(let i=0;i<numeroPergunta;i++){
+                if(document.getElementById(`1certa${i+1}`).checked==true){
+                    document.getElementById(`1certa${i+1}`).value = 1
+                }else{
+                    document.getElementById(`1certa${i+1}`).value = 0
+                }
+                if(document.getElementById(`2certa${i+1}`).checked==true){
+                    document.getElementById(`2certa${i+1}`).value = 1
+                }else{
+                    document.getElementById(`2certa${i+1}`).value = 0
+                }
+            }
+
+            let data = []
+            for(let i=0; i<numeroPergunta;i++){
+                data.push(
+                    [
+                        document.getElementById(`pergunta${i+1}`).value,
+                        [
+                            [document.getElementById(`1resposta${i+1}`).value,document.getElementById(`1certa${i+1}`).value],
+                            [document.getElementById(`2resposta${i+1}`).value,document.getElementById(`2certa${i+1}`).value]
+                        ]
+                    ] 
+                )
+            }
+
+            console.log(data)
+
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost/getlesson_api/atividade/add',
+                dataType: 'json',
+                data: {
+                    info: info,
+                    data: data,
+                    jwt: localStorage.getItem('jwt')
+                },
+                success: function(data){
+                    alert('Requisicao realizada')
+                    console.log(data)
+                },
+                error: function (e){
+                    alert('Erro de requisicao')
+                    console.log(e)
+                }
+            })
+
+        }else{
+            alert('Nenhuma Pergunta Cadastrada!')
+        }
+    }
+    
+}

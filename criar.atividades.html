@@ -21,7 +21,7 @@
                                 <a class="nav-link" href="cadastros.gerais.html">Cadastros Gerais <span class="sr-only">(current)</span></a>
                             </li>
                             <li class="nav-item active">
-                                <a class="nav-link" href="fazer.atividades.html">Criar Atividade <span class="sr-only">(current)</span></a>
+                                <a class="nav-link" href="criar.atividades.html">Criar Atividade <span class="sr-only">(current)</span></a>
                             </li>
                             <li class="nav-item active">
                                 <a class="nav-link" href="#" onclick="logout()">Sair <span class="sr-only">(current)</span></a>
@@ -37,6 +37,35 @@
         <!-- Inicio do Conteúdo -->
         <main>
             <div class="container border">
+                <form method="POST" id="form-activity">
+                    <div class="form-group row mt-3">
+                        <label for="nomeAtividade" class="col-2 col-form-label">Nome da Atividade</label>
+                        <div class="col-10">
+                            <input type="text" class="form-control" id="nomeAtividade" name="nomeAtividade">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="dataDeEntrega" class="col-2 col-form-label">Data de Entrega</label>
+                        <div class="col-4">
+                            <input type="text" class="form-control" id="dataDeEntrega" name="dataDeEntrega">
+                        </div>
+                        <label for="idTipoPergunta" class="col-2 col-form-label">Tipos de Pergunta</label>
+                        <div class="col-4">
+                            <select class="form-control" id="idTipoPergunta" name="idTipoPergunta">
+                                <option value="1">Alternativa</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div id="perguntas">
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-6"><button type="button" class="btn btn-primary" onclick="novaPergunta()">+ Nova Pergunta</button></div>
+                        <div class="col-6 text-right"><button type="button" class="btn btn-success" onclick="cadastrarAtividade()">Cadastrar Atividade</button></div>
+                    </div>
+                </form>
             </div>
         </main>
         <!-- Fim do Conteúdo -->
