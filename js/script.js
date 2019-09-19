@@ -15,6 +15,7 @@ if(document.getElementById('form-login')!==null){
                 if(data.error===""){
                     localStorage.setItem('emailUsuario', document.getElementById('emailUsuario').value)
                     localStorage.setItem('jwt', data.jwt)
+                    localStorage.setItem('idUsuario', data.idUsuario)
                     window.location.replace('cadastros.gerais.html')
                 }
                 alert('Requisicao realizada')
@@ -453,7 +454,7 @@ if(document.getElementById('form-teacher')!==null){
                 var selects = "";
                 if(data.data !== "Nenhum Componente Existente"){
                     for(let i=0;i<data.data.length;i++){
-                        selects += `<option value="${data.data[i].idComponente}">${data.data[i].nomeComponente}</option>`
+                        selects += `<option value="${data.data[i].idcomponente}">${data.data[i].nomeComponente}</option>`
                     }
                     var componentes = document.getElementById('componentes')
                     componentes.innerHTML = selects
@@ -594,7 +595,7 @@ if(document.getElementById('form-teacher')!==null){
     jQuery("#componentes").change(function(){
         for(let i=0;i<allComponentes.data.length;i++){
             let id = document.getElementById('componentes').value
-            if(id === allComponentes.data[i].idComponente){
+            if(id === allComponentes.data[i].idcomponente){
                 let nomeComponente = document.getElementById('nomeComponente')
                 nomeComponente.value = allComponentes.data[i].nomeComponente
                 let siglaComponente = document.getElementById('siglaComponente')
@@ -734,45 +735,121 @@ if(document.getElementById('form-activity')!==null){
 
     //Nova Pergunta
     let numeroPergunta = 0
+    let array = []
     function novaPergunta(){
         numeroPergunta++
-        let perguntas = document.getElementById('perguntas').innerHTML
-        pergunta =
-        `<div class="form-group row">
-            <div class="col-12">
-                <label for="pergunta${numeroPergunta}">Pergunta ${numeroPergunta}</label>
-                <textarea class="form-control" id="pergunta${numeroPergunta}" rows="4"></textarea>
+        array[numeroPergunta] = 0
+        if(document.getElementById('idTipoPergunta').value==1){
+            let perguntas = document.getElementById('perguntas')
+            HTMLNovo =
+            `<div class="form-group row">
+                <div class="col-12">
+                    <label for="pergunta${numeroPergunta}">Pergunta ${numeroPergunta}</label>
+                    <textarea class="form-control" id="pergunta${numeroPergunta}" rows="4"></textarea>
+                </div>
             </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-1">
-                <input class="form-check-input ml-4" type="radio" name="certa${numeroPergunta}" id="1certa${numeroPergunta}">
-                <label for="1certa${numeroPergunta}" class="form-check-label">A)</label>
+            <div class="form-group row">
+                <div class="col-1">
+                    <input class="form-check-input ml-4" type="radio" name="certa${numeroPergunta}" id="1certa${numeroPergunta}">
+                    <label for="1certa${numeroPergunta}" class="form-check-label">A)</label>
+                </div>
+                <div class="col-11">
+                    <input type="text" class="form-control" id="1resposta${numeroPergunta}" name="1resposta${numeroPergunta}">
+                </div>
             </div>
-            <div class="col-11">
-                <input type="text" class="form-control" id="1resposta${numeroPergunta}" name="1resposta${numeroPergunta}">
+            <div class="form-group row">
+                <div class="col-1">
+                    <input class="form-check-input ml-4" type="radio" name="certa${numeroPergunta}" id="2certa${numeroPergunta}">
+                    <label for="2certa${numeroPergunta}" class="form-check-label">B)</label>
+                </div>
+                <div class="col-11">
+                    <input type="text" class="form-control" id="2resposta${numeroPergunta}" name="2resposta${numeroPergunta}">
+                </div>
             </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-1">
-                <input class="form-check-input ml-4" type="radio" name="certa${numeroPergunta}" id="2certa${numeroPergunta}">
-                <label for="2certa${numeroPergunta}" class="form-check-label">B)</label>
+            <div id="novasAlternativas${numeroPergunta}">
             </div>
-            <div class="col-11">
-                <input type="text" class="form-control" id="2resposta${numeroPergunta}" name="2resposta${numeroPergunta}">
-            </div>
-        </div><hr>`
-        perguntas = perguntas + pergunta
-        document.getElementById('perguntas').innerHTML = perguntas
+            <div class="form-group row">
+                <div class="col-12">
+                    <a href="#" onclick="novaAlternativa(${numeroPergunta},${array[numeroPergunta]})" id="addAlternativa${numeroPergunta}">+ Adicionar Alternativa</a>
+                </div>
+            </div><hr>`;
+            perguntas.insertAdjacentHTML('beforeend',HTMLNovo)
+        }else{
+            let perguntas = document.getElementById('perguntas')
+            HTMLNovo =
+            `<div class="form-group row">
+                <div class="col-12">
+                    <label for="pergunta${numeroPergunta}">Enunciado ${numeroPergunta}</label>
+                    <textarea class="form-control" id="pergunta${numeroPergunta}" rows="4"></textarea>
+                </div>
+            </div><hr>`;
+            perguntas.insertAdjacentHTML('beforeend',HTMLNovo)
+        }
+    }
+
+    //Nova Alternativa
+    function novaAlternativa(numeroPergunta,numeroAlternativa){
+        array[numeroPergunta]++
+        console.log(array[numeroPergunta])
+        if(array[numeroPergunta]===1){
+            let novasAlternativas = document.getElementById(`novasAlternativas${numeroPergunta}`)
+            HTMLNovo = 
+            `<div class="form-group row">
+                <div class="col-1">
+                    <input class="form-check-input ml-4" type="radio" name="certa${numeroPergunta}" id="3certa${numeroPergunta}">
+                    <label for="3certa${numeroPergunta}" class="form-check-label">C)</label>
+                </div>
+                <div class="col-11">
+                    <input type="text" class="form-control" id="3resposta${numeroPergunta}" name="3resposta${numeroPergunta}">
+                </div> 
+            </div>`
+            novasAlternativas.insertAdjacentHTML('beforeend',HTMLNovo)
+        }else if(array[numeroPergunta]===2){
+            let novasAlternativas = document.getElementById(`novasAlternativas${numeroPergunta}`)
+            HTMLNovo = 
+            `<div class="form-group row">
+                <div class="col-1">
+                    <input class="form-check-input ml-4" type="radio" name="certa${numeroPergunta}" id="4certa${numeroPergunta}">
+                    <label for="4certa${numeroPergunta}" class="form-check-label">D)</label>
+                </div>
+                <div class="col-11">
+                    <input type="text" class="form-control" id="4resposta${numeroPergunta}" name="4resposta${numeroPergunta}">
+                </div> 
+            </div>`
+            novasAlternativas.insertAdjacentHTML('beforeend',HTMLNovo)
+        }else if(array[numeroPergunta]===3){
+            let novasAlternativas = document.getElementById(`novasAlternativas${numeroPergunta}`)
+            HTMLNovo = 
+            `<div class="form-group row">
+                <div class="col-1">
+                    <input class="form-check-input ml-4" type="radio" name="certa${numeroPergunta}" id="5certa${numeroPergunta}">
+                    <label for="5certa${numeroPergunta}" class="form-check-label">E)</label>
+                </div>
+                <div class="col-11">
+                    <input type="text" class="form-control" id="5resposta${numeroPergunta}" name="5resposta${numeroPergunta}">
+                </div> 
+            </div>`
+            novasAlternativas.insertAdjacentHTML('beforeend',HTMLNovo)
+            var remove = document.getElementById(`addAlternativa${numeroPergunta}`)
+            remove.parentNode.removeChild(remove)
+        }
     }
 
     //Cadastrar Atividade
+    data = new Date
+    let dataAtual = data.getFullYear()+"/"+(data.getMonth()+1)+"/"+data.getDate()
     function cadastrarAtividade(){
         if(numeroPergunta !== 0){
+            let id=0
+            for(let i=0;i<allComponenteProfessor.error.length;i++){
+                if(document.getElementById('idComponenteProfessor').value == allComponenteProfessor.error[i].idComponenteProfessor){
+                    id = allComponenteProfessor.error[i].idComponenteProfessor
+                }
+            }
             let info = [
-                1,
-                '0000/00/00',
-                '0000/00/00',
+                id,
+                dataAtual,
+                document.getElementById('dataDeEntrega').value,
                 document.getElementById('nomeAtividade').value
             ]
 
@@ -787,19 +864,75 @@ if(document.getElementById('form-activity')!==null){
                 }else{
                     document.getElementById(`2certa${i+1}`).value = 0
                 }
+                if(document.getElementById(`3certa${i+1}`) != null && document.getElementById(`3certa${i+1}`).checked==true){
+                    document.getElementById(`3certa${i+1}`).value = 1
+                }else if(document.getElementById(`3certa${i+1}`) != null){
+                    document.getElementById(`3certa${i+1}`).value = 0
+                }
+                if(document.getElementById(`4certa${i+1}`) != null && document.getElementById(`4certa${i+1}`).checked==true){
+                    document.getElementById(`4certa${i+1}`).value = 1
+                }else if(document.getElementById(`4certa${i+1}`) != null){
+                    document.getElementById(`4certa${i+1}`).value = 0
+                }
+                if(document.getElementById(`5certa${i+1}`) != null && document.getElementById(`5certa${i+1}`).checked==true){
+                    document.getElementById(`5certa${i+1}`).value = 1
+                }else if(document.getElementById(`5certa${i+1}`) != null){
+                    document.getElementById(`5certa${i+1}`).value = 0
+                }
             }
 
             let data = []
             for(let i=0; i<numeroPergunta;i++){
-                data.push(
-                    [
-                        document.getElementById(`pergunta${i+1}`).value,
+                if(document.getElementById(`3resposta${i+1}`)==null){
+                    data.push(
                         [
-                            [document.getElementById(`1resposta${i+1}`).value,document.getElementById(`1certa${i+1}`).value],
-                            [document.getElementById(`2resposta${i+1}`).value,document.getElementById(`2certa${i+1}`).value]
-                        ]
-                    ] 
-                )
+                            document.getElementById(`pergunta${i+1}`).value,
+                            [
+                                [document.getElementById(`1resposta${i+1}`).value,document.getElementById(`1certa${i+1}`).value],
+                                [document.getElementById(`2resposta${i+1}`).value,document.getElementById(`2certa${i+1}`).value]
+                            ]
+                        ] 
+                    )
+                }
+                else if(document.getElementById(`4resposta${i+1}`)==null){
+                    data.push(
+                        [
+                            document.getElementById(`pergunta${i+1}`).value,
+                            [
+                                [document.getElementById(`1resposta${i+1}`).value,document.getElementById(`1certa${i+1}`).value],
+                                [document.getElementById(`2resposta${i+1}`).value,document.getElementById(`2certa${i+1}`).value],
+                                [document.getElementById(`3resposta${i+1}`).value,document.getElementById(`3certa${i+1}`).value]
+                            ]
+                        ] 
+                    )
+                }
+                else if(document.getElementById(`5resposta${i+1}`)==null){
+                    data.push(
+                        [
+                            document.getElementById(`pergunta${i+1}`).value,
+                            [
+                                [document.getElementById(`1resposta${i+1}`).value,document.getElementById(`1certa${i+1}`).value],
+                                [document.getElementById(`2resposta${i+1}`).value,document.getElementById(`2certa${i+1}`).value],
+                                [document.getElementById(`3resposta${i+1}`).value,document.getElementById(`3certa${i+1}`).value],
+                                [document.getElementById(`4resposta${i+1}`).value,document.getElementById(`4certa${i+1}`).value]
+                            ]
+                        ] 
+                    )
+                }
+                else if(document.getElementById(`5resposta${i+1}`)!==null){
+                    data.push(
+                        [
+                            document.getElementById(`pergunta${i+1}`).value,
+                            [
+                                [document.getElementById(`1resposta${i+1}`).value,document.getElementById(`1certa${i+1}`).value],
+                                [document.getElementById(`2resposta${i+1}`).value,document.getElementById(`2certa${i+1}`).value],
+                                [document.getElementById(`3resposta${i+1}`).value,document.getElementById(`3certa${i+1}`).value],
+                                [document.getElementById(`4resposta${i+1}`).value,document.getElementById(`4certa${i+1}`).value],
+                                [document.getElementById(`5resposta${i+1}`).value,document.getElementById(`5certa${i+1}`).value]
+                            ]
+                        ] 
+                    )
+                }
             }
 
             console.log(data)
@@ -814,7 +947,10 @@ if(document.getElementById('form-activity')!==null){
                     jwt: localStorage.getItem('jwt')
                 },
                 success: function(data){
-                    alert('Requisicao realizada')
+                    if(data.error === ""){
+                        alert('Cadastrado com sucesso!')
+                        window.location.reload()
+                    }
                     console.log(data)
                 },
                 error: function (e){
@@ -822,10 +958,38 @@ if(document.getElementById('form-activity')!==null){
                     console.log(e)
                 }
             })
-
+            
         }else{
             alert('Nenhuma Pergunta Cadastrada!')
         }
     }
+
+    //Preencher Combo
+    let allComponenteProfessor = {}
+    function preencherComponentes(){
+        $.ajax({
+            type: 'get',
+            dataType: 'json',
+            url: 'http://localhost/getlesson_api/componente/user/'+localStorage.getItem('idUsuario'),
+            data: {
+                jwt: localStorage.getItem('jwt')
+            },
+            success(data){
+                allComponenteProfessor = data
+                var selects = "";
+                for(let i=0;i<data.error.length;i++){
+                    selects += `<option value="${data.error[i].idComponenteProfessor}">${data.error[i].nomeComponente}</option>`
+                }
+                var componentes = document.getElementById('idComponenteProfessor')
+                componentes.innerHTML = selects
+                
+                console.log(data.error)
+            },
+            error(e){
+                alert('Erro de requisicao')
+                console.log(e)
+            }
+        })
+    }preencherComponentes()
     
 }

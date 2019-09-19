@@ -40,8 +40,13 @@
                 <form method="POST" id="form-activity">
                     <div class="form-group row mt-3">
                         <label for="nomeAtividade" class="col-2 col-form-label">Nome da Atividade</label>
-                        <div class="col-10">
+                        <div class="col-4">
                             <input type="text" class="form-control" id="nomeAtividade" name="nomeAtividade">
+                        </div>
+                        <label for="idComponenteProfessor" class="col-2 col-form-label">Componente</label>
+                        <div class="col-4">
+                            <select class="form-control" id="idComponenteProfessor" name="idComponenteProfessor">
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -53,6 +58,7 @@
                         <div class="col-4">
                             <select class="form-control" id="idTipoPergunta" name="idTipoPergunta">
                                 <option value="1">Alternativa</option>
+                                <option value="2">Dissertativa</option>
                             </select>
                         </div>
                     </div>
