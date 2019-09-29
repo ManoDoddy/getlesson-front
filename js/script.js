@@ -16,7 +16,7 @@ if(document.getElementById('form-login')!==null){
                     localStorage.setItem('emailUsuario', document.getElementById('emailUsuario').value)
                     localStorage.setItem('jwt', data.jwt)
                     localStorage.setItem('idUsuario', data.idUsuario)
-                    window.location.replace('cadastros.gerais.html')
+                    window.location.replace('cadastros.gerais.php')
                 }
                 alert('Requisicao realizada')
                 console.log(data)
@@ -32,7 +32,7 @@ if(document.getElementById('form-login')!==null){
 //logout
 function logout(){
     localStorage.clear()
-    window.location.replace('./login.html')
+    window.location.replace('./login.php')
 }
 
 //Página de Cadastros Gerais

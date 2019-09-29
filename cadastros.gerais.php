@@ -11,17 +11,17 @@
         <div class="bg-dark">
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <a class="navbar-brand" href="login.html">Getlesson</a>
+                    <a class="navbar-brand" href="login.php">Getlesson</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-5">
                             <li class="nav-item active">
-                                <a class="nav-link" href="cadastros.gerais.html">Cadastros Gerais <span class="sr-only">(current)</span></a>
+                                <a class="nav-link" href="cadastros.gerais.php">Cadastros Gerais <span class="sr-only">(current)</span></a>
                             </li>
                             <li class="nav-item active">
-                                <a class="nav-link" href="criar.atividades.html">Criar Atividade <span class="sr-only">(current)</span></a>
+                                <a class="nav-link" href="criar.atividades.php">Criar Atividade <span class="sr-only">(current)</span></a>
                             </li>
                             <li class="nav-item active">
                                 <a class="nav-link" href="#" onclick="logout()">Sair <span class="sr-only">(current)</span></a>
@@ -222,7 +222,7 @@
     
     <script>
         if(localStorage.getItem('emailUsuario') == null){
-            window.location.replace('login.html')
+            window.location.replace('login.php')
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
